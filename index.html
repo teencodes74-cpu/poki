@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poki-Style Game Portal</title>
+  <meta name="description" content="Play free browser games instantly. Discover action, puzzle, racing, and arcade games on this responsive Poki-style portal." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-content">
+      <a href="#" class="logo">PlayHub</a>
+      <nav class="top-nav" aria-label="Main Navigation">
+        <a href="#categories">Categories</a>
+        <a href="#featured">Featured</a>
+        <a href="#free-links">Free Games</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Play Free Online Games</h1>
+        <p>Jump into quick games, discover new categories, and play directly in your browser.</p>
+        <label for="search" class="sr-only">Search games</label>
+        <div class="search-wrap">
+          <input id="search" type="search" placeholder="Search games, e.g. snake, memory..." autocomplete="off" />
+        </div>
+      </div>
+    </section>
+
+    <section id="categories" class="container categories">
+      <h2>Browse Categories</h2>
+      <div class="chip-list" role="list" aria-label="Game categories">
+        <button class="chip active" data-category="all">All</button>
+        <button class="chip" data-category="arcade">Arcade</button>
+        <button class="chip" data-category="puzzle">Puzzle</button>
+        <button class="chip" data-category="action">Action</button>
+        <button class="chip" data-category="racing">Racing</button>
+      </div>
+    </section>
+
+    <section id="featured" class="container games-section">
+      <div class="section-head">
+        <h2>Featured Games</h2>
+        <p id="game-count" aria-live="polite"></p>
+      </div>
+      <div id="game-grid" class="game-grid"></div>
+    </section>
+
+    <section id="free-links" class="container free-links">
+      <h2>More Free Browser Games</h2>
+      <ul>
+        <li><a href="https://www.crazygames.com" target="_blank" rel="noopener noreferrer">CrazyGames</a></li>
+        <li><a href="https://itch.io/games/free" target="_blank" rel="noopener noreferrer">itch.io Free Games</a></li>
+        <li><a href="https://www.miniclip.com/games/en/" target="_blank" rel="noopener noreferrer">Miniclip</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> PlayHub • Built with HTML, CSS, and JavaScript • GitHub Pages Ready</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

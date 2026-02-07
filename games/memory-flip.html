@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Flip</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #11162a;
+      color: #edf1ff;
+      display: grid;
+      place-items: center;
+      font-family: system-ui, sans-serif;
+      padding: 1rem;
+    }
+    .wrap { width: min(560px, 100%); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    button {
+      aspect-ratio: 1 / 1;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      background: #2c365f;
+      color: #edf1ff;
+      font-weight: 700;
+    }
+    .matched { background: #2f9f7d; }
+    a { color: #8ad6ff; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Memory Flip</h1>
+    <p>Find all matching pairs. Moves: <span id="moves">0</span> • <a href="../index.html">Back to Portal</a></p>
+    <div id="grid" class="grid"></div>
+  </div>
+
+  <script>
+    const icons = ['🍕','🚀','🎮','🐱','🍕','🚀','🎮','🐱','🌟','⚽','🌟','⚽','🍎','🎲','🍎','🎲'];
+    icons.sort(() => Math.random() - 0.5);
+
+    const grid = document.getElementById('grid');
+    const movesEl = document.getElementById('moves');
+    let first = null;
+    let lock = false;
+    let moves = 0;
+    let matched = 0;
+
+    icons.forEach((icon, idx) => {
+      const card = document.createElement('button');
+      card.dataset.icon = icon;
+      card.dataset.index = idx;
+      card.textContent = '❓';
+      card.addEventListener('click', () => flip(card));
+      grid.appendChild(card);
+    });
+
+    function flip(card) {
+      if (lock || card.classList.contains('matched') || card === first) return;
+      card.textContent = card.dataset.icon;
+
+      if (!first) {
+        first = card;
+        return;
+      }
+
+      moves += 1;
+      movesEl.textContent = moves;
+
+      if (first.dataset.icon === card.dataset.icon) {
+        first.classList.add('matched');
+        card.classList.add('matched');
+        matched += 2;
+        first = null;
+
+        if (matched === icons.length) {
+          setTimeout(() => alert(`You won in ${moves} moves!`), 120);
+        }
+      } else {
+        lock = true;
+        setTimeout(() => {
+          first.textContent = '❓';
+          card.textContent = '❓';
+          first = null;
+          lock = false;
+        }, 700);
+      }
+    }
+  </script>
+</body>
+</html>
