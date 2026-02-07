@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake Sprint</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #101523;
+      color: #eff4ff;
+      font-family: system-ui, sans-serif;
+      padding: 1rem;
+    }
+    .game-shell { text-align: center; }
+    canvas {
+      border: 2px solid #2f3a61;
+      background: #0b1020;
+      width: min(92vw, 420px);
+      height: min(92vw, 420px);
+    }
+    a { color: #8ad6ff; }
+  </style>
+</head>
+<body>
+  <div class="game-shell">
+    <h1>Snake Sprint</h1>
+    <p>Use arrow keys to move. Eat food and avoid walls or yourself.</p>
+    <canvas id="board" width="420" height="420"></canvas>
+    <p>Score: <span id="score">0</span> • <a href="../index.html">Back to Portal</a></p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('board');
+    const ctx = canvas.getContext('2d');
+    const box = 21;
+    let snake = [{ x: 10 * box, y: 10 * box }];
+    let dir = 'RIGHT';
+    let food = spawnFood();
+    let score = 0;
+
+    function spawnFood() {
+      return {
+        x: Math.floor(Math.random() * 20) * box,
+        y: Math.floor(Math.random() * 20) * box
+      };
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && dir !== 'RIGHT') dir = 'LEFT';
+      if (e.key === 'ArrowUp' && dir !== 'DOWN') dir = 'UP';
+      if (e.key === 'ArrowRight' && dir !== 'LEFT') dir = 'RIGHT';
+      if (e.key === 'ArrowDown' && dir !== 'UP') dir = 'DOWN';
+    });
+
+    function draw() {
+      ctx.fillStyle = '#0b1020';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      snake.forEach((part, i) => {
+        ctx.fillStyle = i === 0 ? '#4ef2b2' : '#39b7ff';
+        ctx.fillRect(part.x + 2, part.y + 2, box - 4, box - 4);
+      });
+
+      ctx.fillStyle = '#ffcf5c';
+      ctx.fillRect(food.x + 3, food.y + 3, box - 6, box - 6);
+
+      let head = { ...snake[0] };
+      if (dir === 'LEFT') head.x -= box;
+      if (dir === 'RIGHT') head.x += box;
+      if (dir === 'UP') head.y -= box;
+      if (dir === 'DOWN') head.y += box;
+
+      if (
+        head.x < 0 ||
+        head.y < 0 ||
+        head.x >= canvas.width ||
+        head.y >= canvas.height ||
+        snake.some((s) => s.x === head.x && s.y === head.y)
+      ) {
+        alert(`Game over! Score: ${score}`);
+        snake = [{ x: 10 * box, y: 10 * box }];
+        dir = 'RIGHT';
+        score = 0;
+        food = spawnFood();
+        document.getElementById('score').textContent = score;
+        return;
+      }
+
+      snake.unshift(head);
+
+      if (head.x === food.x && head.y === food.y) {
+        score += 1;
+        document.getElementById('score').textContent = score;
+        food = spawnFood();
+      } else {
+        snake.pop();
+      }
+    }
+
+    setInterval(draw, 110);
+  </script>
+</body>
+</html>
